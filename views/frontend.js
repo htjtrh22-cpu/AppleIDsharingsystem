@@ -15,10 +15,12 @@ function getHtmlContent(keys) {
   <meta name="keywords" content="${cfg.keywords || ''}">
   <meta name="description" content="${cfg.description || ''}">
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='120' fill='%23b91c1c'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='140' fill='%23fcd34d'%3E福%3C/text%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
   
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
@@ -63,7 +65,10 @@ function getHtmlContent(keys) {
       transition: all 0.5s ease;
     }
     @media (max-width: 768px) {
-        body { background-image: url('${bgMobile}'); }
+        body { background-image: url('${bgMobile}'); background-attachment: scroll; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     }
 
     /* === 滚动公告 === */
@@ -149,10 +154,26 @@ function getHtmlContent(keys) {
     .zib-verify-btn { background: #f3f4f6; border: none; border-radius: 12px; padding: 0 15px; font-size: 12px; font-weight: 700; color: #4b5563; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
     .zib-verify-btn:hover { background: #e5e7eb; }
 
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.2); border-radius: 24px; position: relative; z-index: 10; padding: 2rem; width: 100%; max-width: 1200px; margin-top: 1rem; transition: background 0.5s ease; opacity: 1 !important; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 14px 50px -20px rgba(15, 23, 42, 0.45); border-radius: 24px; position: relative; z-index: 10; padding: 2rem; width: 100%; max-width: 1200px; margin-top: 1rem; transition: background 0.5s ease, transform 0.3s ease; opacity: 1 !important; }
     .glass-table th { background: rgba(0,0,0,0.05); color: var(--text-primary); letter-spacing: 0.05em; }
     .glass-table td { color: var(--text-primary); border-bottom: 1px solid rgba(0,0,0,0.05); }
     .glass-table tr:hover td { background: rgba(0,0,0,0.02); }
+    .glass-table tr:hover td { transform: translateZ(0); }
+
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.02em; }
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: #065f46; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-red { background: rgba(239, 68, 68, 0.15); color: #991b1b; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .btn-primary { background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(249, 115, 22, 0.95)); color: #fff; border: 1px solid rgba(239, 68, 68, 0.4); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35); }
+
+    .welfare-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; font-weight: 600; background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12); color: var(--text-primary); }
+
+    .account-grid { content-visibility: auto; contain-intrinsic-size: 1px 800px; }
+    .account-card { position: relative; overflow: hidden; }
+    .account-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)); opacity: 0; transition: opacity 0.3s ease; }
+    .account-card:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -24px rgba(15, 23, 42, 0.5); }
+    .account-card:hover::before { opacity: 1; }
 
     .btn-vip { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #78350f; border: 1px solid #fef3c7; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); transition: all 0.3s ease; font-weight: 700; border-radius: 99px; padding: 8px 20px; }
     .btn-vip:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6); }
@@ -451,7 +472,7 @@ function getHtmlContent(keys) {
     </div>
   </div>
 
-  <audio id="bgMusic" loop src="${cfg.music_url}"></audio>
+  <audio id="bgMusic" loop preload="none" src="${cfg.music_url}"></audio>
   <div id="musicControl" onclick="toggleMusic()" title="点击播放/暂停"><span style="font-size: 24px;">🎵</span></div>
 
   <div id="pageWrapper" class="glass-panel animate-fade-in-up">
@@ -551,7 +572,7 @@ function getHtmlContent(keys) {
         </div>
       </div>
 
-      <div id="internetResultsMobileContainer" class="hidden md:hidden space-y-4"><div id="internetAccountsMobileList" class="grid grid-cols-1 gap-4"></div></div>
+      <div id="internetResultsMobileContainer" class="hidden md:hidden space-y-4"><div id="internetAccountsMobileList" class="grid grid-cols-1 gap-4 account-grid"></div></div>
     </main>
 
     <footer class="mt-10 text-center text-xs opacity-60" style="color:var(--text-primary)"><p>© 2026 Apple Share System</p></footer>
@@ -1070,7 +1091,7 @@ function getHtmlContent(keys) {
         listEl.innerHTML = '';
         accounts.forEach(acc => {
           const card = document.createElement('div'); 
-          card.className = 'glass-panel rounded-2xl p-5 border border-white/20 relative overflow-hidden';
+          card.className = 'glass-panel account-card rounded-2xl p-5 border border-white/20 relative overflow-hidden';
           const statusBadge = acc.status ? '<span class="badge badge-green">正常</span>' : '<span class="badge badge-red">异常</span>';
           const blurClass = this.isHumanVerified ? 'sensitive-data revealed' : 'sensitive-data';
           
@@ -1638,4 +1659,3 @@ function getHtmlContent(keys) {
 }
 
 module.exports = { getHtmlContent };
-
